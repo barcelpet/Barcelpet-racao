@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Marcas de Ração</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --card: #22263a;
+    --border: #2e3350;
+    --accent: #f4a829;
+    --accent2: #4fc3f7;
+    --accent3: #81c784;
+    --accent4: #f06292;
+    --text: #e8eaf6;
+    --muted: #8892b0;
+    --tier1: #ffd700;
+    --tier2: #c0c0c0;
+    --tier3: #cd7f32;
+    --tier4: #78909c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  header {
+    text-align: center;
+    padding: 40px 20px 30px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 30px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--accent);
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-top: 8px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .tab {
+    padding: 10px 22px;
+    border-radius: 30px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab.active { background: var(--accent); color: #111; border-color: var(--accent); }
+
+  /* SECTION */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* TIER LEGEND */
+  .tier-legend {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .tier-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+  }
+
+  .tier-badge .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .t-premium { background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.3); color: var(--tier1); }
+  .t-premium .dot { background: var(--tier1); }
+  .t-superpremium { background: rgba(192,192,192,0.1); border-color: rgba(192,192,192,0.3); color: var(--tier2); }
+  .t-superpremium .dot { background: var(--tier2); }
+  .t-standard { background: rgba(205,127,50,0.1); border-color: rgba(205,127,50,0.3); color: var(--tier3); }
+  .t-standard .dot { background: var(--tier3); }
+  .t-eco { background: rgba(120,144,156,0.1); border-color: rgba(120,144,156,0.3); color: var(--tier4); }
+  .t-eco .dot { background: var(--tier4); }
+
+  /* BRAND GRID */
+  .brand-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .brand-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+    transition: transform 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+
+  .brand-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .brand-card.store-brand { border-color: rgba(244,168,41,0.4); background: linear-gradient(135deg, #22263a, #251f14); }
+
+  .brand-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .store-tag {
+    font-size: 0.65rem;
+    background: rgba(244,168,41,0.2);
+    color: var(--accent);
+    border: 1px solid rgba(244,168,41,0.4);
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .tier-pill {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tier-pill.gold { background: rgba(255,215,0,0.15); color: var(--tier1); border: 1px solid rgba(255,215,0,0.3); }
+  .tier-pill.silver { background: rgba(192,192,192,0.15); color: var(--tier2); border: 1px solid rgba(192,192,192,0.3); }
+  .tier-pill.bronze { background: rgba(205,127,50,0.15); color: var(--tier3); border: 1px solid rgba(205,127,50,0.3); }
+  .tier-pill.slate { background: rgba(120,144,156,0.15); color: var(--tier4); border: 1px solid rgba(120,144,156,0.3); }
+
+  .brand-origin {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .brand-desc {
+    font-size: 0.85rem;
+    color: #9da8c7;
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  .brand-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--surface);
+  }
+
+  .tag.green { border-color: rgba(129,199,132,0.4); color: var(--accent3); background: rgba(129,199,132,0.08); }
+  .tag.blue { border-color: rgba(79,195,247,0.4); color: var(--accent2); background: rgba(79,195,247,0.08); }
+  .tag.red { border-color: rgba(240,98,146,0.4); color: var(--accent4); background: rgba(240,98,146,0.08); }
+  .tag.yellow { border-color: rgba(244,168,41,0.4); color: var(--accent); background: rgba(244,168,41,0.08); }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.5px;
+  }
+
+  /* COMPARISON TABLE */
+  .comparison-wrap { overflow-x: auto; margin-bottom: 40px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    min-width: 700px;
+  }
+
+  th {
+    background: var(--surface);
+    color: var(--accent);
+    font-family: 'Playfair Display', serif;
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: #9da8c7;
+    vertical-align: top;
+  }
+
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  td:first-child { color: var(--text); font-weight: 600; font-size: 0.88rem; }
+  td.check { text-align: center; }
+
+  .yes { color: var(--accent3); font-size: 1rem; }
+  .no { color: #ef5350; font-size: 1rem; }
+  .partial { color: var(--accent); font-size: 1rem; }
+
+  /* RECOMMENDATION CARDS */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .rec-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .rec-question {
+    font-size: 0.88rem;
+    color: var(--accent2);
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .rec-question::before { content: "💬"; font-size: 1rem; flex-shrink: 0; margin-top: -1px; }
+
+  .rec-answer {
+    font-size: 0.82rem;
+    color: #9da8c7;
+    line-height: 1.6;
+  }
+
+  .rec-answer strong { color: var(--accent); }
+
+  /* PRICE TABLE */
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .price-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .price-bar-wrap { flex: 1; }
+  .price-brand-name { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .price-bar { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; }
+  .price-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+  .price-label { font-size: 0.72rem; color: var(--muted); margin-top: 5px; }
+
+  .emoji-icon { font-size: 1.6rem; flex-shrink: 0; }
+
+  /* VS SELECTOR */
+  .vs-selector {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 28px;
+  }
+  .vs-selector label {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .vs-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .vs-pill {
+    padding: 9px 20px;
+    border-radius: 30px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .vs-pill:hover { border-color: var(--accent2); color: var(--accent2); }
+  .vs-pill.active { background: rgba(79,195,247,0.15); border-color: var(--accent2); color: var(--accent2); font-weight: 700; }
+
+  .vs-intro {
+    background: linear-gradient(135deg, rgba(79,195,247,0.08), rgba(244,168,41,0.05));
+    border: 1px solid rgba(79,195,247,0.2);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    font-size: 0.88rem;
+    color: #9da8c7;
+    line-height: 1.6;
+  }
+  .vs-intro strong { color: var(--accent2); }
+
+  .vs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .vs-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .vs-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .vs-card-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--accent); }
+  .vs-card-sub { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+  .vs-store-badge {
+    font-size: 0.68rem;
+    background: rgba(244,168,41,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(244,168,41,0.3);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 700;
+  }
+  .vs-points { padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .vs-point {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 0.83rem;
+    color: #9da8c7;
+    line-height: 1.55;
+  }
+  .vs-icon { flex-shrink: 0; font-size: 1rem; margin-top: 1px; }
+  .vs-point strong { color: var(--text); }
+  .vs-point.pos::before { content: "✅ "; }
+  .vs-point.warn::before { content: "⚠️ "; }
+  .vs-point.info::before { content: "💡 "; }
+  .vs-point.price::before { content: "💰 "; }
+
+  .vs-pitch {
+    margin: 0 0 28px;
+    background: linear-gradient(135deg, rgba(129,199,132,0.08), rgba(244,168,41,0.05));
+    border: 1px solid rgba(129,199,132,0.25);
+    border-radius: 14px;
+    padding: 18px 22px;
+  }
+  .vs-pitch-title {
+    font-size: 0.8rem;
+    color: var(--accent3);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 10px;
+  }
+  .vs-pitch p { font-size: 0.85rem; color: #9da8c7; line-height: 1.65; font-style: italic; }
+  .vs-pitch p strong { color: var(--text); font-style: normal; }
+
+  .vs-empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 0.9rem; }
+  .vs-empty span { font-size: 2.5rem; display: block; margin-bottom: 12px; }
+
+  /* VET SECTION */
+  .vet-intro {
+    background: linear-gradient(135deg, rgba(240,98,146,0.08), rgba(79,195,247,0.05));
+    border: 1px solid rgba(240,98,146,0.25);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    font-size: 0.87rem;
+    color: #9da8c7;
+    line-height: 1.65;
+  }
+  .vet-intro strong { color: var(--accent4); }
+
+  .vet-brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+
+  .vet-brand-card {
+    background: var(--card);
+    border: 1px solid rgba(240,98,146,0.3);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .vet-brand-header {
+    background: linear-gradient(135deg, rgba(240,98,146,0.15), rgba(79,195,247,0.08));
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(240,98,146,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .vet-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--text);
+  }
+
+  .vet-brand-origin { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+
+  .vet-badge {
+    font-size: 0.68rem;
+    background: rgba(240,98,146,0.2);
+    color: var(--accent4);
+    border: 1px solid rgba(240,98,146,0.4);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .vet-brand-body { padding: 18px 20px; }
+  .vet-brand-desc { font-size: 0.84rem; color: #9da8c7; line-height: 1.6; margin-bottom: 14px; }
+
+  .vet-lines-title {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .vet-lines-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .vet-line {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 12px;
+  }
+
+  .vet-line-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .vet-line-desc { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
+
+  .vet-args {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .vet-arg-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+
+  .vet-arg-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .vet-arg-body { font-size: 0.82rem; color: #9da8c7; line-height: 1.6; }
+  .vet-arg-body strong { color: var(--text); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.78rem;
+    padding: 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCAUAAtADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoorI8QeL/CvhS2a78TeI9N0uJQWLXd0kWR7biM/QU0nJ2RpSo1K81TpRcpPZJXf3I16K+efFv7c3wO8OvLb6Xfahr1xGSoFlbERkj/bfAx7jNeMeKP8Agoj4ouvMh8H+BdPsUOQk17O0zj32rtH869TD5LjcT8ELeuh99lXhZxZmyUqeElCL6ztD8JWf3I+7ahnu7S1Uvc3UUSjqZHCj9a/L7xB+1t8fPELsH8d3FhG+f3djGkIA+oG79a871rxp4u8SyGXxB4n1TUWPObm6eT9Ca+hwvBNet/FqqPom/wDI/QMB9H7NKlnjsXCH+FSm/wAeVH6x6r8UvhvoYY6t470G229RJqEQI/DOa4jVf2s/gDpDtFN4/t52Xgi1t5Zh+aqR+tfl6KeOlfSYXw9wT/jVZP0sv8z6rC+AGUU/96xVSf8AhUY/mpH6O3n7cfwHtiRDqGs3WP8AnlpzD/0Misub9vf4OR58nR/E0v8A26RD+clfnzT696h4dZM/i53/ANvf5JHrw8D+Fqfxe0l6zX6RR96yf8FAfhorfu/CPiN19dsI/wDZ6en7f3wxb7/hPxIv0SE/+1K+CR0py9K9Sn4b5BJawl/4Ezd+C/Ce3sp/+ByP0Atv29fhBLgT6L4lh+trE38pK1Lb9uD4FzkCW71q3z/z008nH/fJNfnZT60/4hbkNTbnXpL/ADTOWr4JcLz+H2kfSf8AnFn6Z6V+1h8BdWIWLx5Bbse11byw/qy4rs9J+Knw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oAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//2Q==" alt="Barcelpet" style="width:90px;height:90px;border-radius:50%;object-fit:cover;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;">
+  <h1>Guia de Marcas de Ração</h1>
+  <p>Comparação completa · Cão &amp; Gato · Barcelpet</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showSection('todas', this)">Todas as Marcas</button>
+  <button class="tab" onclick="showSection('minhas', this)">As Minhas Marcas</button>
+  <button class="tab" onclick="showSection('comparacao', this)">Comparação Detalhada</button>
+  <button class="tab" onclick="showSection('recomendacoes', this)">Recomendações</button>
+  <button class="tab" onclick="showSection('precos', this)">Posicionamento Preço</button>
+  <button class="tab" onclick="showSection('argumentos', this)">💬 Argumentos de Venda</button>
+  <button class="tab" onclick="showSection('veterinaria', this)">🏥 Gama Veterinária</button>
+</div>
+
+<!-- ===== TODAS AS MARCAS ===== -->
+<div id="todas" class="section active">
+  <div class="tier-legend">
+    <span class="tier-badge t-premium"><span class="dot"></span>Super-Premium Holístico</span>
+    <span class="tier-badge t-superpremium"><span class="dot"></span>Super-Premium</span>
+    <span class="tier-badge t-standard"><span class="dot"></span>Premium</span>
+    <span class="tier-badge t-eco"><span class="dot"></span>Económico / Entrada</span>
+  </div>
+
+  <p class="section-title">Todas as marcas do mercado</p>
+  <div class="brand-grid" id="all-brands"></div>
+</div>
+
+<!-- ===== MINHAS MARCAS ===== -->
+<div id="minhas" class="section">
+  <p class="section-title">Marcas da loja — Cão 🐶</p>
+  <div class="brand-grid" id="my-dog-brands"></div>
+  <p class="section-title">Marcas da loja — Gato 🐱</p>
+  <div class="brand-grid" id="my-cat-brands"></div>
+</div>
+
+<!-- ===== COMPARAÇÃO ===== -->
+<div id="comparacao" class="section">
+  <p class="section-title">Comparação técnica — Cão & Gato</p>
+  <div class="comparison-wrap">
+    <table id="comp-table"></table>
+  </div>
+</div>
+
+<!-- ===== RECOMENDAÇÕES ===== -->
+<div id="recomendacoes" class="section">
+  <p class="section-title">Guia de recomendação para clientes</p>
+  <div class="rec-grid" id="recs"></div>
+</div>
+
+<!-- ===== PREÇOS ===== -->
+<div id="precos" class="section">
+  <p class="section-title">Posicionamento de preço (do mais barato ao mais caro)</p>
+  <div class="price-grid" id="price-grid"></div>
+</div>
+
+<!-- ===== ARGUMENTOS DE VENDA ===== -->
+<div id="argumentos" class="section">
+  <p class="section-title">💬 Argumentos de venda — "Porque devo trocar para esta loja?"</p>
+
+  <div class="vs-selector">
+    <label>O cliente usa atualmente:</label>
+    <div class="vs-pills" id="vs-pills"></div>
+  </div>
+
+  <div id="vs-content"></div>
+</div>
+
+<!-- ===== GAMA VETERINÁRIA ===== -->
+<div id="veterinaria" class="section">
+  <p class="section-title">🏥 Gama Veterinária da Loja</p>
+
+  <div class="vet-intro">
+    <strong>Importante:</strong> As dietas veterinárias devem ser usadas sempre com indicação ou supervisão do médico veterinário. São alimentos com formulações específicas para patologias concretas — não substituem o diagnóstico clínico. A grande vantagem das marcas da loja é oferecer <strong>qualidade super-premium sem cereais</strong>, ao contrário do Royal Canin e Hill's que usam cereais nas suas dietas vet.
+  </div>
+
+  <div class="vet-brands-grid" id="vet-brands-grid"></div>
+
+  <p class="section-title" style="margin-top:32px">📋 Tabela comparativa — Dietas disponíveis vs. concorrência</p>
+  <div class="comparison-wrap">
+    <table id="vet-table"></table>
+  </div>
+
+  <p class="section-title">💡 Argumentos vs. Royal Canin Vet / Hill's</p>
+  <div class="vet-args" id="vet-args"></div>
+</div>
+
+<footer>Guia interno de loja · Atualizado 2025 · Para uso em consulta com clientes</footer>
+
+<script>
+const brands = [
+  // ---- LOJA ----
+  {
+    name: "Dibaq Sense",
+    origin: "🇪🇸 Espanha — Dibaq Petcare",
+    tier: "gold", tierLabel: "Super-Premium Holístico",
+    desc: "Gama holística 100% natural, grain-free ou low-grain. Ingredientes frescos de qualidade humana, hipoalergénica. Sem glúten, milho, soja, ovo. Com protetores articulares em todas as referências.",
+    tags: [{t:"Grain-Free",c:"green"},{t:"Hipoalergénica",c:"green"},{t:"Carne Fresca",c:"blue"},{t:"Sem Glúten",c:"green"}],
+    store: true, dog: true, cat: true,
+    price: 90, grainFree: "✅", freshMeat: "✅", hypo: "✅", vet: "❌", specific: "✅", joint: "✅", sensitive: "✅", cereal: "❌"
+  },
+  {
+    name: "Dibaq 5 Star",
+    origin: "🇪🇸 Espanha — Dibaq Petcare",
+    tier: "gold", tierLabel: "Super-Premium Holístico",
+    desc: "Natural Moments — gama reinventada 5 estrelas. Carne ou peixe como 1º ingrediente, monocereais (arroz), sem trigo/milho/glúten/soja. Complexo funcional completo: articulações, pele, digestão, probióticos.",
+    tags: [{t:"5 Estrelas",c:"yellow"},{t:"Monograin",c:"blue"},{t:"Sem Glúten",c:"green"},{t:"Probióticos",c:"green"}],
+    store: true, dog: true, cat: true,
+    price: 80, grainFree: "⚡", freshMeat: "✅", hypo: "✅", vet: "❌", specific: "✅", joint: "✅", sensitive: "✅", cereal: "Arroz"
+  },
+  {
+    name: "Picart Select",
+    origin: "🇪🇸 Espanha — Piensos Picart",
+    tier: "silver", tierLabel: "Super-Premium",
+    desc: "Super-premium espanhola com +70 anos. Carne de qualidade humana, sem conservantes artificiais, sem OGM. Inclui condroitina, glucosamina e postbióticos. Variedades Sensitive (salmão/borrego).",
+    tags: [{t:"Natural",c:"green"},{t:"Postbióticos",c:"blue"},{t:"Sem OGM",c:"green"},{t:"Condroprotetores",c:"blue"}],
+    store: true, dog: true, cat: false,
+    price: 65, grainFree: "❌", freshMeat: "✅", hypo: "⚡", vet: "❌", specific: "✅", joint: "✅", sensitive: "✅", cereal: "Arroz/Batata"
+  },
+  {
+    name: "Josidog",
+    origin: "🇩🇪 Alemanha — Josera/Erbacher",
+    tier: "bronze", tierLabel: "Premium",
+    desc: "Gama premium da família Josera. Sem glúten, com boas fontes proteicas. Excelente relação qualidade-preço. Várias referências por fase de vida e tamanho. Fabricado na Alemanha.",
+    tags: [{t:"Sem Glúten",c:"green"},{t:"Alemanha",c:"blue"},{t:"Preço Acessível",c:"yellow"}],
+    store: true, dog: true, cat: true,
+    price: 45, grainFree: "❌", freshMeat: "⚡", hypo: "⚡", vet: "❌", specific: "⚡", joint: "⚡", sensitive: "⚡", cereal: "Sim"
+  },
+  {
+    name: "Josera",
+    origin: "🇩🇪 Alemanha — Josera Petfood",
+    tier: "silver", tierLabel: "Super-Premium",
+    desc: "Marca alemã super-premium com +80 anos. Sem corantes nem aromas artificiais. Grain-free disponível. Holística, com ingredientes naturais. Produzida na Baviera e certificada. Apenas gato na loja.",
+    tags: [{t:"80+ Anos",c:"blue"},{t:"Sem Corantes",c:"green"},{t:"Alemanha",c:"blue"},{t:"Grain-Free",c:"green"}],
+    store: true, dog: false, cat: true,
+    price: 70, grainFree: "✅", freshMeat: "✅", hypo: "✅", vet: "❌", specific: "✅", joint: "✅", sensitive: "✅", cereal: "Opcional"
+  },
+  {
+    name: "Josicat",
+    origin: "🇩🇪 Alemanha — Josera/Erbacher",
+    tier: "bronze", tierLabel: "Premium",
+    desc: "Prima premium da Josera, exclusiva para gatos. Adulto (frango, aves, vaca), kitten, esterilizado. Sem corantes artificiais, 78% proteína de origem animal. Bom preço para a qualidade oferecida.",
+    tags: [{t:"Só Gato",c:"red"},{t:"78% Prot. Animal",c:"blue"},{t:"Sem Corantes",c:"green"}],
+    store: true, dog: false, cat: true,
+    price: 42, grainFree: "❌", freshMeat: "⚡", hypo: "❌", vet: "❌", specific: "⚡", joint: "❌", sensitive: "❌", cereal: "Sim"
+  },
+  {
+    name: "Sum Sum (DAPAC)",
+    origin: "🇪🇸 Espanha — Grupo DAPAC",
+    tier: "bronze", tierLabel: "Premium Acessível",
+    desc: "DOG#1 Sum Sum — gama criada para oferecer qualidade de gama alta a preço acessível. Cocção a baixa temperatura, sem milho/trigo, com protetores hepáticos, condroitina e glucosamina. 70% proteína animal.",
+    tags: [{t:"Preço-Qualidade",c:"yellow"},{t:"70% Prot. Animal",c:"blue"},{t:"Condroprotetores",c:"blue"},{t:"Sem Milho/Trigo",c:"green"}],
+    store: true, dog: true, cat: true,
+    price: 40, grainFree: "❌", freshMeat: "⚡", hypo: "❌", vet: "❌", specific: "⚡", joint: "✅", sensitive: "❌", cereal: "Baixo"
+  },
+  {
+    name: "Dican (Up)",
+    origin: "🇪🇸 Espanha — Dibaq Petcare",
+    tier: "bronze", tierLabel: "Premium",
+    desc: "Da Dibaq, com +60 anos de experiência. Cozida a vapor, sem aditivos artificiais, sem OGM. Plantas naturais: camomila, melissa, yucca, alecrim. Boa palatabilidade, frango, peixe ou borrego.",
+    tags: [{t:"Cozida a Vapor",c:"blue"},{t:"Sem OGM",c:"green"},{t:"Plantas Naturais",c:"green"}],
+    store: true, dog: true, cat: true,
+    price: 38, grainFree: "❌", freshMeat: "❌", hypo: "❌", vet: "❌", specific: "⚡", joint: "⚡", sensitive: "⚡", cereal: "Sim"
+  },
+  {
+    name: "Gapetfood (GA)",
+    origin: "🇬🇧 Reino Unido — GA Pet Food Partners",
+    tier: "silver", tierLabel: "Super-Premium (Marca Própria)",
+    desc: "Produzida pelo maior fabricante europeu de private label. Processo Freshtrusion® exclusivo — até 80% carne fresca cozida a 82°C. Qualidade super-premium com rastreabilidade total dos ingredientes.",
+    tags: [{t:"Freshtrusion®",c:"blue"},{t:"80% Carne Fresca",c:"green"},{t:"Marca Própria",c:"yellow"},{t:"Rastreabilidade",c:"green"}],
+    store: true, dog: true, cat: true,
+    price: 60, grainFree: "✅", freshMeat: "✅", hypo: "⚡", vet: "❌", specific: "⚡", joint: "⚡", sensitive: "⚡", cereal: "Opcional"
+  },
+  {
+    name: "Fluffy",
+    origin: "🇵🇹 Portugal — Avenal Petfood",
+    tier: "slate", tierLabel: "Económico / Entrada",
+    desc: "Marca portuguesa desde 1999, produzida pela Avenal Petfood (fundada em 1954). Ração acessível para o mercado português e brasileiro. Cumpre necessidades nutricionais básicas a bom preço.",
+    tags: [{t:"🇵🇹 Portuguesa",c:"yellow"},{t:"Preço Baixo",c:"yellow"},{t:"Acessível",c:"yellow"}],
+    store: true, dog: true, cat: true,
+    price: 20, grainFree: "❌", freshMeat: "❌", hypo: "❌", vet: "❌", specific: "❌", joint: "❌", sensitive: "❌", cereal: "Sim"
+  },
+  // ---- MERCADO ----
+  {
+    name: "Royal Canin",
+    origin: "🇫🇷 França — Mars Petcare",
+    tier: "silver", tierLabel: "Super-Premium (Veterinário/Raça)",
+    desc: "Líder mundial em nutrição por raça e condição de saúde. Fórmulas veterinárias prescritas muito fortes. Ingredientes controversos na manutenção (subprodutos, milho). Excelente para dietas terapêuticas.",
+    tags: [{t:"Dietas Vet.",c:"red"},{t:"Por Raça",c:"blue"},{t:"Prescrito",c:"red"},{t:"Caro",c:"red"}],
+    store: false, dog: true, cat: true,
+    price: 95, grainFree: "❌", freshMeat: "❌", hypo: "⚡", vet: "✅", specific: "✅", joint: "✅", sensitive: "✅", cereal: "Sim"
+  },
+  {
+    name: "Pro Plan (Purina)",
+    origin: "🇺🇸 EUA — Nestlé Purina",
+    tier: "silver", tierLabel: "Super-Premium",
+    desc: "Carne real como 1º ingrediente, muito recomendado por veterinários. Probióticos vivos em várias linhas. Mais acessível que Royal Canin. Excelente para a maioria dos cães saudáveis. Suportado por investigação científica.",
+    tags: [{t:"Vet. Recomendado",c:"blue"},{t:"Probióticos Vivos",c:"green"},{t:"Carne 1º Ing.",c:"green"},{t:"Investigação",c:"blue"}],
+    store: false, dog: true, cat: true,
+    price: 85, grainFree: "⚡", freshMeat: "✅", hypo: "⚡", vet: "⚡", specific: "✅", joint: "✅", sensitive: "✅", cereal: "Opcional"
+  },
+  {
+    name: "Ownat",
+    origin: "🇪🇸 Espanha — Cotécnica SCCL",
+    tier: "silver", tierLabel: "Super-Premium",
+    desc: "Espanhola, ingredientes locais (Lleida). Processo de cocção lenta a baixa temperatura. Sem corantes artificiais. Gama Classic (com cereais), Ultra e Grain-Free. Boa relação qualidade-preço no segmento super-premium.",
+    tags: [{t:"Slow Cooking",c:"blue"},{t:"Ingredientes Locais",c:"green"},{t:"Grain-Free Disp.",c:"green"},{t:"Sem Corantes",c:"green"}],
+    store: false, dog: true, cat: true,
+    price: 72, grainFree: "✅", freshMeat: "✅", hypo: "⚡", vet: "❌", specific: "⚡", joint: "✅", sensitive: "✅", cereal: "Opcional"
+  },
+  {
+    name: "Acana",
+    origin: "🇨🇦 Canadá — Champion Petfoods",
+    tier: "gold", tierLabel: "Super-Premium Holístico",
+    desc: "Biologically Appropriate™ — alto teor de proteína, ingredientes regionais. Sem cereais em muitas linhas. Muito proteica, pode ser difícil de digerir para alguns cães. Premium de gama alta.",
+    tags: [{t:"Alto Teor Proteína",c:"blue"},{t:"Grain-Free",c:"green"},{t:"Ingredientes Regionais",c:"green"},{t:"Caro",c:"red"}],
+    store: false, dog: true, cat: true,
+    price: 100, grainFree: "✅", freshMeat: "✅", hypo: "⚡", vet: "❌", specific: "⚡", joint: "⚡", sensitive: "❌", cereal: "❌"
+  },
+  {
+    name: "Advance",
+    origin: "🇪🇸 Espanha — Affinity Petcare",
+    tier: "silver", tierLabel: "Super-Premium Veterinário",
+    desc: "Marca super-premium da Affinity, com raiz veterinária. Recomendada para dietas dermatológicas e específicas. Probióticos e prebióticos. Proteína animal como 1º ingrediente. Disponível em lojas especializadas.",
+    tags: [{t:"Vet. Foco",c:"red"},{t:"Probióticos",c:"green"},{t:"Pele \u0026 Coat",c:"blue"},{t:"Dietas Específicas",c:"blue"}],
+    store: false, dog: true, cat: true,
+    price: 78, grainFree: "⚡", freshMeat: "✅", hypo: "✅", vet: "⚡", specific: "✅", joint: "✅", sensitive: "✅", cereal: "Opcional"
+  },
+  {
+    name: "Libra",
+    origin: "🇪🇸 Espanha — Affinity Petcare",
+    tier: "slate", tierLabel: "Económico / Entrada",
+    desc: "Gama económica da Affinity. Nutrição mediterrânea, sem conservantes artificiais. Boa opção de entrada para clientes com orçamento limitado. Abaixo das gamas premium em qualidade de ingredientes.",
+    tags: [{t:"Preço Baixo",c:"yellow"},{t:"Mediterrâneo",c:"yellow"},{t:"Sem Conservantes",c:"green"},{t:"Básico",c:"yellow"}],
+    store: false, dog: true, cat: true,
+    price: 18, grainFree: "❌", freshMeat: "❌", hypo: "❌", vet: "❌", specific: "❌", joint: "❌", sensitive: "❌", cereal: "Sim"
+  }
+];
+
+const recommendations = [
+  { q: "Cão/gato com alergias ou sensibilidades alimentares", a: "<strong>1ª opção: Dibaq Sense</strong> (grain-free, hipoalergénico, monoprotéico). Alternativas: <strong>Gapetfood</strong> (Freshtrusion® sem cereais) ou <strong>Picart Select Sensitive</strong> (salmão/borrego). Se o cliente já tiver diagnóstico veterinário: <strong>Advance Hypoallergenic</strong> ou <strong>Royal Canin</strong> prescrito." },
+  { q: "Cão/gato com problemas articulares", a: "<strong>Dibaq Sense</strong> (condroitina + glucosamina + MSM em todas as referências) ou <strong>Dibaq 5 Star Mobility</strong> (especialmente formulado). <strong>Sum Sum</strong> e <strong>Ownat Mobility</strong> também têm condroprotetores. Para casos clínicos: <strong>Royal Canin</strong> ou <strong>Pro Plan Joint</strong>." },
+  { q: "Cão/gato com excesso de peso", a: "<strong>Dibaq 5 Star Ultralight</strong> ou <strong>Josera Weight \u0026 Diabetic</strong>. <strong>Sum Sum Light</strong> (proteção hepática incluída). Em gatos esterilizados: <strong>Josicat Sterilised</strong> ou <strong>Josera Cat</strong> esterilizado. Para casos clínicos: <strong>Royal Canin</strong> ou <strong>Pro Plan</strong> Weight Management." },
+  { q: "Filhote (cachorro/gatinho)", a: "Para qualidade máxima: <strong>Dibaq Sense Puppy Salmão \u0026 Peru</strong> ou <strong>Dibaq 5 Star Farm \u0026 Field Puppy</strong>. Boa relação Q/P: <strong>Josidog Junior</strong> (raças médias/grandes). Para orçamento reduzido: <strong>Dican Up Pups</strong>. Gato: <strong>Josera Kitten</strong> ou <strong>Josicat Kitten</strong>." },
+  { q: "Cão/gato sénior", a: "<strong>Dibaq 5 Star Mobility</strong> (articulações, sénior 7+) ou <strong>Josera SensiAdult</strong>. <strong>Sum Sum Light Mature</strong> (proteção hepática + articular). Para gatos: <strong>Josera Cat Senior</strong>. Se houver condição clínica: encaminhar para <strong>Royal Canin Ageing</strong> ou <strong>Pro Plan Senior</strong>." },
+  { q: "Cliente com orçamento limitado", a: "Melhor relação Q/P da loja: <strong>Sum Sum</strong> ou <strong>Dican Up</strong>. Se preferir português: <strong>Fluffy</strong>. Alternativas externas baratas: <strong>Libra</strong> (Affinity). Nota: explicar que rações económicas podem custar mais em saúde veterinária a longo prazo." },
+  { q: "Cliente que quer o melhor sem limite de preço", a: "<strong>Dibaq Sense Grain-Free</strong> (linha topo) ou <strong>Gapetfood</strong> (Freshtrusion® — até 80% carne fresca). No mercado externo: <strong>Acana</strong>. Todas superam Royal Canin manutenção em qualidade de ingredientes, a preço inferior." },
+  { q: "Por que comprar na loja em vez do Royal Canin?", a: "A <strong>Dibaq Sense</strong> e <strong>Gapetfood</strong> usam ingredientes de maior qualidade (carne fresca, sem subprodutos, sem milho) que o Royal Canin manutenção — a preço igual ou inferior. O RC é excelente para <strong>dietas veterinárias prescritas</strong>, mas para manutenção diária há opções melhores na loja." },
+  { q: "Gato com digestão sensível", a: "<strong>Josera Cat Sensitive</strong> ou <strong>Josicat</strong> com frango (altamente digestível). Em casos mais severos: <strong>Dibaq Sense gato</strong> grain-free. Para diagnóstico veterinário: <strong>Royal Canin Digestive</strong> ou <strong>Advance Sensitive</strong>." },
+  { q: "Cão de raça pequena", a: "<strong>Dibaq Sense Mini</strong> (kibble adaptado, hipoalergénico) ou <strong>Dibaq 5 Star Mini</strong>. <strong>Picart Select Mini</strong> com boa palatabilidade. <strong>Josidog Mini</strong> (kibble extra pequeno, sem glúten). O Royal Canin tem muitas raças específicas mas é o mais caro." },
+  { q: "Cão de trabalho / alta atividade", a: "<strong>Josidog Active</strong> ou <strong>Josera Active Nature</strong> (L-carnitina, proteína elevada). <strong>Dibaq 5 Star</strong> gama standard para atividade moderada. Para competição: <strong>Pro Plan Sport</strong> ou <strong>Royal Canin Sport</strong> (fórmulas específicas)." },
+  { q: "Cliente que vem do Royal Canin / Pro Plan", a: "Apresentar <strong>Dibaq Sense</strong> como alternativa de qualidade superior em ingredientes, sem subprodutos, a preço competitivo. <strong>Josera</strong> / <strong>Advance</strong> para quem prefere suporte veterinário. <strong>Ownat Ultra</strong> para quem gosta do slow-cooking espanhol." }
+];
+
+function renderBrands(containerId, filterFn) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = brands.filter(filterFn).map(b => `
+    <div class="brand-card ${b.store ? 'store-brand' : ''}">
+      <div class="brand-header">
+        <div>
+          <div class="brand-name">${b.name}</div>
+          ${b.store ? '<div class="store-tag">Na Loja</div>' : ''}
+        </div>
+        <span class="tier-pill ${b.tier}">${b.tierLabel}</span>
+      </div>
+      <div class="brand-origin">${b.origin}</div>
+      <div class="brand-desc">${b.desc}</div>
+      <div class="brand-tags">${b.tags.map(t => `<span class="tag ${t.c}">${t.t}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
+
+function renderTable() {
+  const cols = [
+    {k:'grainFree', label:'Grain-Free'},
+    {k:'freshMeat', label:'Carne Fresca'},
+    {k:'hypo', label:'Hipoalergénico'},
+    {k:'vet', label:'Dieta Vet.'},
+    {k:'specific', label:'Específico'},
+    {k:'joint', label:'Articulações'},
+    {k:'sensitive', label:'Sensível'},
+    {k:'cereal', label:'Cereal'}
+  ];
+  const table = document.getElementById('comp-table');
+  const headerRow = `<tr><th>Marca</th>${cols.map(c => `<th>${c.label}</th>`).join('')}</tr>`;
+  const rows = brands.map(b => `
+    <tr>
+      <td>${b.name}${b.store ? ' <span style="color:var(--accent);font-size:0.7rem">★</span>' : ''}</td>
+      ${cols.map(c => {
+        const v = b[c.k];
+        let cls = '';
+        if (v === '✅') cls = 'yes';
+        else if (v === '❌') cls = 'no';
+        else if (v === '⚡') cls = 'partial';
+        return `<td class="check"><span class="${cls}">${v}</span></td>`;
+      }).join('')}
+    </tr>
+  `).join('');
+  table.innerHTML = `<thead>${headerRow}</thead><tbody>${rows}</tbody>`;
+}
+
+function renderRecs() {
+  const el = document.getElementById('recs');
+  el.innerHTML = recommendations.map(r => `
+    <div class="rec-card">
+      <div class="rec-question">${r.q}</div>
+      <div class="rec-answer">${r.a}</div>
+    </div>
+  `).join('');
+}
+
+function renderPrices() {
+  const sorted = [...brands].sort((a,b) => a.price - b.price);
+  const max = Math.max(...sorted.map(b => b.price));
+  const colors = {gold:'#f4a829', silver:'#c0c0c0', bronze:'#cd7f32', slate:'#78909c'};
+  const el = document.getElementById('price-grid');
+  el.innerHTML = sorted.map(b => {
+    const pct = Math.round((b.price / max) * 100);
+    const color = colors[b.tier] || '#78909c';
+    const emoji = b.price < 30 ? '💰' : b.price < 60 ? '🐾' : b.price < 80 ? '⭐' : '👑';
+    return `
+      <div class="price-card">
+        <div class="emoji-icon">${emoji}</div>
+        <div class="price-bar-wrap">
+          <div class="price-brand-name">${b.name}${b.store ? ' <span style="color:var(--accent);font-size:0.7rem">★</span>' : ''}</div>
+          <div class="price-bar"><div class="price-fill" style="width:${pct}%;background:${color}"></div></div>
+          <div class="price-label">${b.tierLabel} · ${b.price < 30 ? 'Económico' : b.price < 55 ? 'Acessível' : b.price < 80 ? 'Premium' : 'Alto'}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ===== ARGUMENTOS DE VENDA =====
+const vsData = {
+  "Royal Canin": {
+    intro: "O Royal Canin é uma marca muito conhecida e recomendada por veterinários, especialmente para <strong>dietas terapêuticas prescritas</strong>. No entanto, para uso diário de manutenção, as marcas da loja oferecem ingredientes de qualidade igual ou superior — a preço mais baixo.",
+    pitch: "\"O Royal Canin que está a usar é excelente para dietas veterinárias específicas. Para a alimentação diária do seu animal, temos marcas com ingredientes de melhor qualidade — carne fresca como 1º ingrediente, sem subprodutos, sem milho — a um preço mais acessível. O seu animal vai sentir a diferença no pelo, energia e digestão.\"",
+    alternatives: [
+      {
+        name: "Dibaq Sense",
+        sub: "Substituto direto de gama holística",
+        points: [
+          {cls:"pos", t:"<strong>Carne fresca</strong> como 1º ingrediente — o Royal Canin manutenção usa subprodutos de frango e milho"},
+          {cls:"pos", t:"<strong>100% grain-free</strong> disponível — sem glúten, milho nem trigo"},
+          {cls:"pos", t:"<strong>Hipoalergénico</strong> em todas as referências — Royal Canin só em linhas específicas"},
+          {cls:"price", t:"Preço semelhante ou inferior para qualidade de ingredientes superior"},
+          {cls:"pos", t:"<strong>Condroitina + glucosamina</strong> incluídas em TODAS as referências, não só nas gamas sénior"}
+        ]
+      },
+      {
+        name: "Gapetfood (GA)",
+        sub: "Super-premium com carne fresca até 80%",
+        points: [
+          {cls:"pos", t:"Processo <strong>Freshtrusion®</strong> — carne cozida a 82°C preserva nutrientes que o kibble convencional do Royal Canin destrói"},
+          {cls:"pos", t:"Até <strong>80% carne fresca</strong> — sem comparação com o Royal Canin manutenção"},
+          {cls:"price", t:"Preço inferior ao Royal Canin para qualidade superior de ingredientes"},
+          {cls:"info", t:"Para dietas veterinárias prescritas (renal, urinary, etc.) continuar com Royal Canin — aí sim é insubstituível"}
+        ]
+      },
+      {
+        name: "Dibaq 5 Star",
+        sub: "Alternativa premium acessível",
+        points: [
+          {cls:"pos", t:"Sem trigo, milho, glúten nem soja — o Royal Canin manutenção contém cereais controversos"},
+          {cls:"pos", t:"<strong>Probióticos + prebióticos</strong> incluídos — suporte digestivo que o Royal Canin não tem na gama standard"},
+          {cls:"price", t:"Até 30% mais barato que Royal Canin com ingredientes comparáveis ou melhores"}
+        ]
+      }
+    ]
+  },
+  "Pro Plan": {
+    intro: "O Pro Plan é uma boa marca — usa carne real como 1º ingrediente e tem investigação científica séria por trás. O desafio é justificar o preço premium quando as marcas da loja oferecem argumentos muito semelhantes ou superiores.",
+    pitch: "\"O Pro Plan é uma escolha sólida e percebo porque o usa. As marcas que trabalhamos têm perfis nutricionais equivalentes ou superiores, com mais carne fresca, sem cereais controversos, e a preço competitivo. Vale a pena experimentar uma embalagem pequena e comparar o pelo e a energia do seu animal ao fim de 4 semanas.\"",
+    alternatives: [
+      {
+        name: "Dibaq Sense",
+        sub: "Holístico vs. suportado por pesquisa",
+        points: [
+          {cls:"pos", t:"<strong>Grain-free completo</strong> disponível — Pro Plan usa trigo e milho em várias linhas"},
+          {cls:"pos", t:"Sem subprodutos cárnicos em nenhuma referência — Pro Plan tem em algumas linhas"},
+          {cls:"pos", t:"<strong>Hipoalergénico</strong> por definição — Pro Plan tem linhas específicas a preço muito alto"},
+          {cls:"price", t:"Preço competitivo face ao Pro Plan, especialmente nas embalagens maiores"},
+          {cls:"info", t:"Para cães com necessidades clínicas muito específicas, o Pro Plan Veterinary pode ser mais adequado"}
+        ]
+      },
+      {
+        name: "Josera / Josidog",
+        sub: "Alemã vs. americana — qualidade europeia",
+        points: [
+          {cls:"pos", t:"<strong>+80 anos de experiência</strong> alemã em nutrição animal — tradição equivalente à Purina"},
+          {cls:"pos", t:"Sem corantes, aromas artificiais nem conservantes — Pro Plan usa alguns em certas linhas"},
+          {cls:"pos", t:"Fabricado na Alemanha com normas europeias mais exigentes que as americanas"},
+          {cls:"price", t:"Josidog é consideravelmente mais barato que Pro Plan com qualidade premium europeia"}
+        ]
+      },
+      {
+        name: "Picart Select",
+        sub: "Espanhola premium vs. multinacional",
+        points: [
+          {cls:"pos", t:"Carne dos <strong>mesmos fornecedores que abastecem consumo humano</strong> — nível de rastreabilidade que o Pro Plan não publicita"},
+          {cls:"pos", t:"<strong>Postbióticos</strong> incluídos — mais avançado que os probióticos vivos do Pro Plan"},
+          {cls:"price", t:"Preço inferior ao Pro Plan para qualidade de ingredientes equivalente ou superior"}
+        ]
+      }
+    ]
+  },
+  "Ownat": {
+    intro: "O Ownat é uma boa marca espanhola — também usa slow cooking e ingredientes naturais. Está bastante alinhada com o posicionamento das marcas da loja. O argumento aqui é mais sobre <strong>disponibilidade, serviço e relação</strong> do que sobre qualidade radicalmente diferente.",
+    pitch: "\"O Ownat é uma boa escolha — é das melhores que o mercado tem. Na loja temos marcas com um perfil muito semelhante ou superior, com a vantagem de poder falar diretamente connosco, termos stock garantido e poder acompanhar o seu animal ao longo do tempo. Experimente a Dibaq Sense ou a Gapetfood — vai notar que a palatabilidade é excelente.\"",
+    alternatives: [
+      {
+        name: "Dibaq Sense",
+        sub: "Holístico grain-free equivalente",
+        points: [
+          {cls:"pos", t:"<strong>Grain-free em toda a gama</strong> — Ownat tem a linha Classic com cereais que pode confundir"},
+          {cls:"pos", t:"Condroitina + glucosamina em <strong>todas</strong> as referências — Ownat só nas linhas Care/Mobility"},
+          {cls:"pos", t:"Marca da Dibaq com +60 anos — equivalente ao historial da Cotécnica/Ownat"},
+          {cls:"info", t:"Ownat Ultra e Grain-Free Prime são equivalentes à Dibaq Sense — nível de qualidade muito similar"}
+        ]
+      },
+      {
+        name: "Gapetfood (GA)",
+        sub: "Carne fresca superior",
+        points: [
+          {cls:"pos", t:"<strong>80% carne fresca</strong> com Freshtrusion® — supera qualquer linha Ownat em teor de carne fresca"},
+          {cls:"pos", t:"Rastreabilidade total dos ingredientes — maior transparência que o Ownat"},
+          {cls:"price", t:"Preço competitivo face ao Ownat Ultra/Grain-Free Prime"}
+        ]
+      },
+      {
+        name: "Josera",
+        sub: "Super-premium alemã vs. espanhola",
+        points: [
+          {cls:"pos", t:"<strong>+80 anos</strong> de especialização — face aos ~30 do Ownat em pet food"},
+          {cls:"pos", t:"Sem testes em animais, certificações europeias rigorosas"},
+          {cls:"info", t:"Ambas são super-premium — a escolha pode depender da palatabilidade do animal específico"}
+        ]
+      }
+    ]
+  },
+  "Advance": {
+    intro: "O Advance é a marca veterinária super-premium da Affinity. Muito boa para condições dermatológicas e dietas específicas. Para manutenção diária, as marcas da loja têm ingredientes comparáveis sem o markup do branding veterinário.",
+    pitch: "\"O Advance é muito bom, especialmente se o seu veterinário o recomendou para uma condição específica. Para alimentação de manutenção diária, as nossas marcas oferecem ingredientes equivalentes — carne fresca, sem cereais controversos, com suporte articular — a um preço mais acessível. Se houver uma condição clínica activa, seguir a recomendação do veterinário é sempre o mais seguro.\"",
+    alternatives: [
+      {
+        name: "Dibaq Sense",
+        sub: "Holístico vs. veterinário premium",
+        points: [
+          {cls:"pos", t:"<strong>Grain-free completo</strong> — Advance tem linhas com arroz e outros cereais"},
+          {cls:"pos", t:"Formulação hipoalergénica em toda a gama — Advance só nas linhas Hypoallergenic (mais caras)"},
+          {cls:"price", t:"Preço significativamente inferior ao Advance para qualidade de ingredientes equivalente"},
+          {cls:"warn", t:"Se o veterinário prescreveu Advance Atopic/Renal/etc., respeitar essa indicação clínica"}
+        ]
+      },
+      {
+        name: "Picart Select",
+        sub: "Premium espanhola sem markup vet.",
+        points: [
+          {cls:"pos", t:"<strong>Postbióticos</strong> — tecnologia mais recente que os prebióticos do Advance"},
+          {cls:"pos", t:"Sem OGM, sem conservantes artificiais — padrão equivalente ao Advance"},
+          {cls:"price", t:"Até 25% mais barato que o Advance para manutenção diária"},
+          {cls:"pos", t:"Variedades Sensitive (salmão, borrego) para animais com sensibilidades — sem precisar de prescrição"}
+        ]
+      },
+      {
+        name: "Josera",
+        sub: "Alemã premium sem branding clínico",
+        points: [
+          {cls:"pos", t:"Formulada por veterinários e nutricionistas — mesmo rigor que o Advance mas sem o custo do branding clínico"},
+          {cls:"pos", t:"Fabricada na Alemanha com padrões europeus elevados"},
+          {cls:"price", t:"Preço inferior ao Advance com qualidade super-premium garantida"}
+        ]
+      }
+    ]
+  }
+};
+
+let selectedVs = null;
+
+function renderVsSection() {
+  const pills = document.getElementById('vs-pills');
+  pills.innerHTML = Object.keys(vsData).map(k => `
+    <button class="vs-pill ${selectedVs === k ? 'active' : ''}" onclick="selectVs('${k}')">${k}</button>
+  `).join('');
+
+  const content = document.getElementById('vs-content');
+  if (!selectedVs) {
+    content.innerHTML = `<div class="vs-empty"><span>🔍</span>Seleciona a marca que o cliente usa atualmente para ver os argumentos de venda.</div>`;
+    return;
+  }
+
+  const d = vsData[selectedVs];
+  content.innerHTML = `
+    <div class="vs-intro">📌 ${d.intro}</div>
+    <div class="vs-pitch">
+      <div class="vs-pitch-title">🗣️ Sugestão de discurso com o cliente</div>
+      <p>${d.pitch}</p>
+    </div>
+    <p class="section-title">Alternativas da loja — o que apresentar</p>
+    <div class="vs-grid">
+      ${d.alternatives.map(a => `
+        <div class="vs-card">
+          <div class="vs-card-header">
+            <div>
+              <div class="vs-card-title">${a.name}</div>
+              <div class="vs-card-sub">${a.sub}</div>
+            </div>
+            <span class="vs-store-badge">★ Loja</span>
+          </div>
+          <div class="vs-points">
+            ${a.points.map(p => `<div class="vs-point ${p.cls}">${p.t}</div>`).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function selectVs(name) {
+  selectedVs = name;
+  renderVsSection();
+}
+
+// ===== GAMA VETERINÁRIA =====
+const vetBrands = [
+  {
+    name: "Josera Help",
+    origin: "🇩🇪 Alemanha — Josera Petfood",
+    desc: "Gama veterinária super-premium alemã com +80 anos de know-how. Cada dieta inclui o <strong>Complexo Phytogen</strong> — ingredientes fitoterápicos selecionados (arando, urtiga, gengibre, camomila) que complementam a abordagem dietética de forma natural. Sem cereais nas linhas mais sensíveis. Recomendada por veterinários europeus.",
+    highlight: "Complexo Phytogen exclusivo — ingredientes naturais que complementam cada dieta",
+    dogLines: [
+      {name:"Hypoallergenic", desc:"Alergias e intolerâncias alimentares"},
+      {name:"Gastrointestinal", desc:"Doenças gastrointestinais, diarreia"},
+      {name:"Renal", desc:"Insuficiência renal crónica"},
+      {name:"Heart", desc:"Insuficiência cardíaca crónica"},
+      {name:"Weight \u0026 Diabetic", desc:"Excesso de peso e diabetes"},
+    ],
+    catLines: [
+      {name:"Hypoallergenic", desc:"Alergias e intolerâncias alimentares"},
+      {name:"Gastrointestinal", desc:"Doenças gastrointestinais"},
+      {name:"Renal", desc:"Insuficiência renal crónica (IRC)"},
+      {name:"Urinary", desc:"Cálculos de estruvite / trato urinário"},
+      {name:"Weight \u0026 Diabetic", desc:"Excesso de peso e diabetes"},
+    ]
+  },
+  {
+    name: "Natural Greatness Vet",
+    origin: "🇪🇸 Espanha — Natural Greatness",
+    desc: "Dietas veterinárias que mantêm a filosofia natural da marca: <strong>grain-free, hipoalergénicas, com carne fresca como 1º ingrediente</strong>. Sem cereais, sem lactose, sem glúten, sem conservantes artificiais. A grande diferença face ao Royal Canin e Hill's: ingredientes limpos e naturais mesmo nas dietas terapêuticas.",
+    highlight: "Única gama vet. grain-free + hipoalergénica: 30% carne fresca como 1º ingrediente",
+    dogLines: [
+      {name:"Renal-Oxalate", desc:"Insuficiência renal crónica + cálculos de oxalato"},
+      {name:"Mobility", desc:"Suporte articular e osteoartrite"},
+      {name:"Hypoallergenic", desc:"Alergias e intolerâncias — proteína hidrolisada"},
+      {name:"Gastrointestinal", desc:"IBD, gastroenterite, má absorção"},
+      {name:"Weight \u0026 Diabetic", desc:"Excesso de peso, diabetes, colite"},
+    ],
+    catLines: [
+      {name:"Renal-Oxalate", desc:"Insuficiência renal + cálculos oxalato"},
+      {name:"Urinary Struvite", desc:"Dissolve cálculos estruvite, acidifica urina"},
+      {name:"Gastrointestinal", desc:"IBD, gastroenterite, diarreia, anorexia"},
+      {name:"Weight \u0026 Diabetic", desc:"Obesidade, diabetes, hiperlipidemia"},
+      {name:"Hypoallergenic", desc:"Alergias alimentares, monoproteína"},
+    ]
+  }
+];
+
+const vetTableData = [
+  {patologia:"Insuficiência Renal",  josera:"Help Renal 🐶🐱",   ng:"Renal-Oxalate 🐶🐱",    rc:"Renal 🐶🐱",         pp:"NF Kidney 🐶🐱",         hills:"k/d 🐶🐱"},
+  {patologia:"Urinary / Estruvite", josera:"Help Urinary 🐱",   ng:"Urinary Struvite 🐱",   rc:"Urinary S/O 🐱",     pp:"UR Urinary 🐱",          hills:"c/d 🐱"},
+  {patologia:"Gastrointestinal",    josera:"Help GI 🐶🐱",      ng:"Gastrointestinal 🐶🐱", rc:"Gastro Int. 🐶🐱",   pp:"EN Gastroenteric 🐶🐱",  hills:"i/d 🐶🐱"},
+  {patologia:"Hipoalergénico",      josera:"Help Hypo 🐶🐱",    ng:"Hypoallergenic 🐶🐱",   rc:"Hydrolyzed 🐶🐱",    pp:"HA Hydrolyzed 🐶🐱",     hills:"z/d 🐶🐱"},
+  {patologia:"Peso / Diabetes",     josera:"Help W+D 🐶🐱",     ng:"Weight+Diab. 🐶🐱",     rc:"Satiety/Diab. 🐶🐱", pp:"OM Obesity 🐶🐱",        hills:"r/d, w/d 🐶🐱"},
+  {patologia:"Articulações",        josera:"—",                 ng:"Mobility 🐶",           rc:"Mobility 🐶",        pp:"JM Joint Mob. 🐶",       hills:"j/d 🐶"},
+  {patologia:"Cardíaco",            josera:"Help Heart 🐶",     ng:"—",                     rc:"Cardiac 🐶🐱",       pp:"CC Cardiac 🐶🐱",        hills:"h/d 🐶🐱"},
+  {patologia:"Dermatológico",       josera:"Help Hypo 🐶🐱",    ng:"Hypoallergenic 🐶🐱",   rc:"Derm Comfort 🐶🐱",  pp:"DRM Dermatosis 🐶🐱",    hills:"d/d 🐶🐱"},
+  {patologia:"Grain-Free",          josera:"✅ (maioria)",       ng:"✅ todas",               rc:"❌",                 pp:"❌ arroz/milho",          hills:"❌"},
+  {patologia:"Carne Fresca 1º Ing.",josera:"✅",                 ng:"✅ 30% frango fresco",   rc:"❌ subprodutos",     pp:"❌ arroz/milho 1º ing.",  hills:"❌ subprodutos"},
+  {patologia:"Sem Conserv. Artific.",josera:"✅",                ng:"✅ rosmaninho/vit. E",   rc:"❌",                 pp:"❌",                      hills:"❌"},
+  {patologia:"Complexo Natural",    josera:"✅ Phytogen",        ng:"✅ prebióticos FOS/MOS", rc:"❌",                 pp:"✅ probióticos vivos",    hills:"❌"},
+];
+
+const vetArgs = [
+  {
+    icon: "🌿",
+    title: "Ingredientes naturais mesmo nas dietas clínicas",
+    body: "O Royal Canin Vet, Pro Plan Vet e Hill's usam <strong>arroz, milho e subprodutos</strong> como base — mesmo nas dietas terapêuticas. A <strong>Natural Greatness Vet começa com 30% de carne fresca de frango</strong>, grain-free e hipoalergénica. Para animais já debilitados, a qualidade do ingrediente importa ainda mais."
+  },
+  {
+    icon: "🔬",
+    title: "Josera Help: Complexo Phytogen exclusivo",
+    body: "Cada dieta Josera Help inclui um <strong>complexo fitoterápico personalizado</strong>: arando e urtiga (urinário), gengibre (digestão), camomila (sensibilidade), etc. O Royal Canin e a Pro Plan Vet não têm equivalente natural — usam apenas aditivos sintéticos."
+  },
+  {
+    icon: "🆚",
+    title: "Pro Plan Vet: o que tem de bom e onde fica atrás",
+    body: "<strong>Ponto positivo:</strong> a Pro Plan Vet tem probióticos vivos em algumas linhas e forte investigação científica por trás (500+ investigadores Purina). <strong>Onde fica atrás:</strong> o 1º ingrediente da linha EN Gastroenteric é <em>arroz de destilaria + milho</em> — sem carne fresca. Prescrita exclusivamente em clínicas, com preço elevado. As marcas da loja oferecem <strong>ingredientes mais limpos, grain-free e naturais</strong> a preço mais acessível."
+  },
+  {
+    icon: "💰",
+    title: "Preço mais acessível — sem prescrição obrigatória",
+    body: "Pro Plan Vet, Royal Canin Vet e Hill's são vendidas <strong>exclusivamente em clínicas veterinárias</strong>, com markup significativo. A Josera Help e Natural Greatness Vet estão disponíveis <strong>diretamente na loja</strong>, sem necessidade de prescrição em muitas referências, a preço mais competitivo."
+  },
+  {
+    icon: "🏥",
+    title: "Quando recomendar vs. quando encaminhar",
+    body: "Para <strong>manutenção e prevenção</strong> (tendência renal, urinário, sobrepeso): recomendar diretamente. Para <strong>casos clínicos ativos com diagnóstico médico</strong>: apresentar como alternativa de qualidade e validar com o veterinário. Nunca substituir uma dieta prescrita sem o aval do vet."
+  },
+  {
+    icon: "🐱",
+    title: "Gama felina — diferencial único",
+    body: "Natural Greatness Vet Urinary Struvite para gatos inclui <strong>catnip + proteína de leite hidrolisada</strong> numa fórmula anti-stress inovadora — sem equivalente no Pro Plan Vet nem no Royal Canin. Josera Help Urinary gato é também grain-free, ao contrário do Pro Plan UR que usa cereais."
+  }
+];
+
+function renderVetSection() {
+  // Brand cards
+  const grid = document.getElementById('vet-brands-grid');
+  grid.innerHTML = vetBrands.map(b => `
+    <div class="vet-brand-card">
+      <div class="vet-brand-header">
+        <div>
+          <div class="vet-brand-name">${b.name}</div>
+          <div class="vet-brand-origin">${b.origin}</div>
+        </div>
+        <span class="vet-badge">🏥 Vet. Loja</span>
+      </div>
+      <div class="vet-brand-body">
+        <div class="vet-brand-desc">${b.desc}</div>
+        <div class="vet-lines-title">🐶 Linhas Cão</div>
+        <div class="vet-lines-grid" style="margin-bottom:14px">
+          ${b.dogLines.map(l => `<div class="vet-line"><div class="vet-line-name">${l.name}</div><div class="vet-line-desc">${l.desc}</div></div>`).join('')}
+        </div>
+        <div class="vet-lines-title">🐱 Linhas Gato</div>
+        <div class="vet-lines-grid">
+          ${b.catLines.map(l => `<div class="vet-line"><div class="vet-line-name">${l.name}</div><div class="vet-line-desc">${l.desc}</div></div>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Table
+  const table = document.getElementById('vet-table');
+  table.innerHTML = `
+    <thead><tr>
+      <th>Patologia</th>
+      <th style="color:var(--accent4)">Josera Help ★</th>
+      <th style="color:var(--accent3)">Natural Greatness Vet ★</th>
+      <th style="color:var(--muted)">Pro Plan Vet</th>
+      <th style="color:var(--muted)">Royal Canin Vet</th>
+      <th style="color:var(--muted)">Hill's Prescription</th>
+    </tr></thead>
+    <tbody>
+      ${vetTableData.map(r => `<tr>
+        <td>${r.patologia}</td>
+        <td style="color:#9da8c7">${r.josera}</td>
+        <td style="color:#9da8c7">${r.ng}</td>
+        <td style="color:#667">${r.pp}</td>
+        <td style="color:#667">${r.rc}</td>
+        <td style="color:#667">${r.hills}</td>
+      </tr>`).join('')}
+    </tbody>`;
+
+  // Args
+  const args = document.getElementById('vet-args');
+  args.innerHTML = vetArgs.map(a => `
+    <div class="vet-arg-card">
+      <div class="vet-arg-title">${a.icon} ${a.title}</div>
+      <div class="vet-arg-body">${a.body}</div>
+    </div>
+  `).join('');
+}
+
+function showSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+// Init
+renderBrands('all-brands', () => true);
+renderBrands('my-dog-brands', b => b.store && b.dog);
+renderBrands('my-cat-brands', b => b.store && b.cat);
+renderTable();
+renderRecs();
+renderPrices();
+renderVsSection();
+renderVetSection();
+</script>
+</body>
+</html>
